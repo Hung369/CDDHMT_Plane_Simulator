@@ -3,13 +3,11 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { F16 } from './Airplane';
 import { sky_showroom, base_showroom } from './Texture_Loader';
 import { createDirectionalLight } from './LightSource';
+import { plane_camera } from './Cam';
 
 var camera, scene, renderer;
 var cameraControls, lightSource;
 var planePosition = new THREE.Vector3(0,3,7);
-var cam_matrix = new THREE.Matrix4().makeTranslation(planePosition)
-                .multiply(new THREE.Matrix4().makeRotationX(-0.2))
-                .multiply(new THREE.Matrix4().makeTranslation(0, 0.015, 0.3));
 
 function init(){
     scene = new THREE.Scene();
@@ -35,12 +33,7 @@ function init(){
     scene.add(jet_fighter);
     
     // camera
-    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.01, 2000);
-    camera.lookAt(planePosition);
-    camera.position.set(planePosition.x, planePosition.y, planePosition.z);
-    camera.rotateX(-0.2);
-    camera.position.y += 0.015;
-    camera.position.z += 0.3; 
+    camera = plane_camera(scene, planePosition);
     scene.add(camera)
 
     // controller cam
@@ -58,7 +51,6 @@ function init(){
 
 function animate(){
     requestAnimationFrame(animate);
-    
     cameraControls.update();
     render()
 }
