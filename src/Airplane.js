@@ -1,7 +1,7 @@
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
 import * as THREE from 'three';
 
-const planePosition = new THREE.Vector3(0,-4,7);
+const planePosition = new THREE.Vector3(0,-4,7); // plane initial position
 
 export function F16() {
   var jet = new THREE.Object3D();
