@@ -1,6 +1,8 @@
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
 import * as THREE from 'three';
 
+const planePosition = new THREE.Vector3(0,-4,7);
+
 export function F16() {
   var jet = new THREE.Object3D();
   const loader = new GLTFLoader();
@@ -18,6 +20,11 @@ export function F16() {
     });
     gltf.scene.scale.set(0.8, 0.8, 0.8);
     jet.add(gltf.scene);
-  })
+  });
+
+  jet.position.set(planePosition.x, planePosition.y, planePosition.z);
+  // jet.matrixAutoUpdate = false;
+  // jet.matrixWorldNeedsUpdate = true;
+
   return jet;
 }

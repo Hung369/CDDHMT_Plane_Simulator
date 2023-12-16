@@ -6,7 +6,10 @@ import { createDirectionalLight } from './LightSource';
 
 var camera, scene, renderer;
 var cameraControls, lightSource;
-
+var planePosition = new THREE.Vector3(0,3,7);
+var cam_matrix = new THREE.Matrix4().makeTranslation(planePosition)
+                .multiply(new THREE.Matrix4().makeRotationX(-0.2))
+                .multiply(new THREE.Matrix4().makeTranslation(0, 0.015, 0.3));
 
 function init(){
     scene = new THREE.Scene();
@@ -25,18 +28,19 @@ function init(){
     var groundMaterial = new THREE.MeshPhongMaterial({ map: groundSurface });
     var ground = new THREE.Mesh(groundGeometry, groundMaterial);
     ground.receiveShadow = true;
-    ground.position.set(0,0,0);
     scene.add(ground);
 
     // jet
     var jet_fighter = F16();
-    jet_fighter.position.set(0,-6,0);
     scene.add(jet_fighter);
     
     // camera
     camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.01, 2000);
-    camera.position.set(8, 8, 8);
-    camera.lookAt(new THREE.Vector3(0,0,0));
+    camera.lookAt(planePosition);
+    camera.position.set(planePosition.x, planePosition.y, planePosition.z);
+    camera.rotateX(-0.2);
+    camera.position.y += 0.015;
+    camera.position.z += 0.3; 
     scene.add(camera)
 
     // controller cam
@@ -54,8 +58,13 @@ function init(){
 
 function animate(){
     requestAnimationFrame(animate);
-    renderer.render(scene, camera);
+    
     cameraControls.update();
+    render()
+}
+
+function render(){
+    renderer.render(scene, camera);
 }
 
 init();
