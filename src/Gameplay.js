@@ -12,6 +12,8 @@ const camplanePosition = new THREE.Vector3(0,3,7);
 const x = new THREE.Vector3(1,0,0);
 const y = new THREE.Vector3(0,1,0);
 const z = new THREE.Vector3(0,0,1);
+const delayedRotMatrix = new THREE.Matrix4();
+const delayedQuaternion = new THREE.Quaternion();
 
 function init(){
     scene = new THREE.Scene();

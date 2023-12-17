@@ -45,16 +45,6 @@ export function updatePlaneAxis(x, y, z, planePosition, camera) {
         pitchVelocity += 0.0025;
     }
 
-    if (controls["r"]) {
-        jawVelocity = 0;
-        pitchVelocity = 0;
-        turbo = 0;
-        x.set(1, 0, 0);
-        y.set(0, 1, 0);
-        z.set(0, 0, 1);
-        planePosition.set(0, 3, 7);
-    }
-
     x.applyAxisAngle(z, jawVelocity);
     y.applyAxisAngle(z, jawVelocity);
 
