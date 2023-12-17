@@ -8,7 +8,7 @@ import { plane_camera } from './Cam';
 var camera, scene, renderer;
 var cameraControls, lightSource;
 var jet_fighter;
-const planePosition = new THREE.Vector3(0,3,7);
+const camplanePosition = new THREE.Vector3(0,3,7);
 
 function init(){
     scene = new THREE.Scene();
@@ -34,7 +34,7 @@ function init(){
     scene.add(jet_fighter);
     
     // camera
-    camera = plane_camera(scene, planePosition);
+    camera = plane_camera(scene, camplanePosition);
     scene.add(camera)
 
     // controller cam
@@ -57,7 +57,6 @@ function animate(){
 }
 
 function render(){
-    jet_fighter.rotation.y += 0.01
     renderer.render(scene, camera);
 }
 
