@@ -22,4 +22,4 @@ To run program, use this cmmand
 ```bash
   npm run dev
 ```
-    
+About the src folder, read [this](@https://github.com/Hung369/CDDHMT_Plane_Simulator/tree/main/src#description)
