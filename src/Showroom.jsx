@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { F16 } from "./Airplane";
-import { sky_showroom, base_showroom } from "./Texture_Loader";
-import { createDirectionalLight } from "./LightSource";
+import { sky_showroom, base_showroom } from './Texture_Loader';
+import { createDirectionalLight } from './LightSource';
+import { plane_camera } from './Cam';
+import { updatePlaneAxis } from './Controller';
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setPlaying } from "./redux/gameSlice";
@@ -16,6 +17,14 @@ const ShowroomComponent = () => {
 
   const score = useSelector((state) => state.game.score);
   const isPlaying = useSelector((state) => state.game.isPlaying);
+  const planePosition = new THREE.Vector3(0, 3, 7);
+
+  const x = new THREE.Vector3(1, 0, 0);
+  const y = new THREE.Vector3(0, 1, 0);
+  const z = new THREE.Vector3(0, 0, 1);
+
+  const delayedRotMatrix = new THREE.Matrix4();
+  const delayedQuaternion = new THREE.Quaternion();
 
   const [time, setTime] = useState(5);
 
@@ -52,14 +61,12 @@ const ShowroomComponent = () => {
 
   const handlePause = (event) => {
     if (event.key === "Escape") {
-      if (isPlaying) {
-        dispatch(setPlaying(false));
-        setShow(true); // Show the pause menu when the game is paused
-      } else {
-        dispatch(setPlaying(true));
-      }
+      dispatch(setPlaying(false));
+      setShow(true); // This will toggle the show state
     }
   };
+
+
 
   useEffect(() => {
     // Scene setup
@@ -74,7 +81,7 @@ const ShowroomComponent = () => {
     mountRef.current.appendChild(renderer.domElement);
 
     // Ground setup
-    var groundGeometry = new THREE.BoxGeometry(80, 0.01, 80);
+    var groundGeometry = new THREE.BoxGeometry(580, 0.01, 580);
     var groundSurface = base_showroom();
     var groundMaterial = new THREE.MeshPhongMaterial({ map: groundSurface });
     var ground = new THREE.Mesh(groundGeometry, groundMaterial);
@@ -83,23 +90,13 @@ const ShowroomComponent = () => {
     scene.add(ground);
 
     // Jet setup
-    const jet_fighter = F16();
-    jet_fighter.position.set(0, -6, 0);
+    var jet_fighter = F16();
     scene.add(jet_fighter);
 
     // Camera setup
-    const camera = new THREE.PerspectiveCamera(
-      75,
-      window.innerWidth / window.innerHeight,
-      0.01,
-      2000
-    );
-    camera.position.set(8, 8, 8);
-    camera.lookAt(new THREE.Vector3(0, 0, 0));
+    var camera = plane_camera(scene, planePosition);
     scene.add(camera);
 
-    // Controller setup
-    const cameraControls = new OrbitControls(camera, renderer.domElement);
 
     // Lightsource setup
     const lightSource = createDirectionalLight(0xf4e99b, 5.0);
@@ -115,12 +112,47 @@ const ShowroomComponent = () => {
     );
     scene.add(axesHelper);
 
+    function render() { // render function
+      updatePlaneAxis(x, y, z, planePosition, camera);
+      const rotMatrix = new THREE.Matrix4().makeBasis(x, y, z);
+      const matrix = new THREE.Matrix4().multiply(
+          new THREE.Matrix4().makeTranslation(planePosition.x, planePosition.y, planePosition.z)
+      ).multiply(rotMatrix);
+
+      jet_fighter.matrixAutoUpdate = false;
+      jet_fighter.matrix.copy(matrix);
+
+      var quaternionA = new THREE.Quaternion().copy(delayedQuaternion);
+      var quaternionB = new THREE.Quaternion();
+      quaternionB.setFromRotationMatrix(rotMatrix);
+
+      var interpolationFactor = 0.175;
+      var interpolatedQuaternion = new THREE.Quaternion().copy(quaternionA);
+      interpolatedQuaternion.slerp(quaternionB, interpolationFactor);
+      delayedQuaternion.copy(interpolatedQuaternion);
+
+      delayedRotMatrix.identity();
+      delayedRotMatrix.makeRotationFromQuaternion(delayedQuaternion);
+
+      const cameraMatrix = new THREE.Matrix4().multiply(
+          new THREE.Matrix4().makeTranslation(planePosition.x, planePosition.y, planePosition.z))
+          .multiply(delayedRotMatrix).multiply(new THREE.Matrix4().makeRotationX(-0.2))
+          .multiply(new THREE.Matrix4().makeTranslation(0, 8, 8)
+      );
+
+      camera.matrixAutoUpdate = false;
+      camera.matrix.copy(cameraMatrix);
+      camera.matrixWorldNeedsUpdate = true;
+
+      renderer.render(scene, camera);
+    }
+
     // Animation loop
     let frameId;
     const animate = () => {
       frameId = requestAnimationFrame(animate);
-      renderer.render(scene, camera);
-      cameraControls.update();
+      render();
+      // renderer.render(scene, camera);
     };
 
     animate();
@@ -138,14 +170,10 @@ const ShowroomComponent = () => {
   useEffect(() => {
     window.addEventListener("keydown", handlePause);
 
-    // Clean up
     return () => {
       window.removeEventListener("keydown", handlePause);
-      if (mountRef.current && mountRef.current.contains(renderer.domElement)) {
-        mountRef.current.removeChild(renderer.domElement);
-      }
     };
-  }, [location]);
+  }, [isPlaying]);
 
   return (
     <div style={{ width: "100vw", height: "100vh", position: "relative" }}>
