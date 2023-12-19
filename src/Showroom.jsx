@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
-import { F16 } from "./Airplane";
+import {  F16, Boeing, Propel } from "./Airplane";
 import { sky_showroom, base_showroom } from './Texture_Loader';
 import { createDirectionalLight } from './LightSource';
 import { plane_camera } from './Cam';
@@ -19,6 +19,10 @@ const ShowroomComponent = () => {
   const isPlaying = useSelector((state) => state.game.isPlaying);
   const planePosition = new THREE.Vector3(0, 3, 7);
 
+  const jet_translation = new THREE.Vector3(0, 8, 8);
+  const boeing_translation = new THREE.Vector3(0, 7, 40);
+  const prop_translation = new THREE.Vector3(0, 6, 20);
+  
   const x = new THREE.Vector3(1, 0, 0);
   const y = new THREE.Vector3(0, 1, 0);
   const z = new THREE.Vector3(0, 0, 1);
@@ -137,7 +141,7 @@ const ShowroomComponent = () => {
       const cameraMatrix = new THREE.Matrix4().multiply(
           new THREE.Matrix4().makeTranslation(planePosition.x, planePosition.y, planePosition.z))
           .multiply(delayedRotMatrix).multiply(new THREE.Matrix4().makeRotationX(-0.2))
-          .multiply(new THREE.Matrix4().makeTranslation(0, 8, 8)
+          .multiply(new THREE.Matrix4().makeTranslation(jet_translation.x, jet_translation.y, jet_translation.z)
       );
 
       camera.matrixAutoUpdate = false;

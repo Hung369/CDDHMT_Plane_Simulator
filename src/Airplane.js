@@ -1,7 +1,8 @@
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
 import * as THREE from 'three';
 
-const planePosition = new THREE.Vector3(0,-4,7); // plane initial position
+const jetPosition = new THREE.Vector3(0,-4,7); // plane initial position
+const boeingPosition = new THREE.Vector3(0,2,7); // plane initial position
 
 export function F16() {
   var jet = new THREE.Object3D();
@@ -22,7 +23,8 @@ export function F16() {
     jet.add(gltf.scene);
   });
 
-  jet.position.set(planePosition.x, planePosition.y, planePosition.z);
+  jet.position.set(jetPosition.x, jetPosition.y, jetPosition.z);
+
   return jet;
 }
 
@@ -30,7 +32,7 @@ export function Boeing() {
   var boeing = new THREE.Object3D();
   const loader = new GLTFLoader();
 
-  loader.load('./src/model/boeing_757.glb', (gltf) => {
+  loader.load('./src/model/boeing_52.glb', (gltf) => {
     gltf.scene.traverse(function (node) {
       if (node.isMesh) {
         // Enable shadow casting
@@ -45,15 +47,15 @@ export function Boeing() {
     boeing.add(gltf.scene);
   });
 
-  boeing.position.set(planePosition.x, planePosition.y, planePosition.z);
+  boeing.position.set(boeingPosition.x, boeingPosition.y, boeingPosition.z);
   return boeing;
 }
 
-export function X_wing() {
+export function Propel() {
   var jet = new THREE.Object3D();
   const loader = new GLTFLoader();
 
-  loader.load('./src/model/X_wing.glb', (gltf) => {
+  loader.load('./src/model/halifax.glb', (gltf) => {
     gltf.scene.traverse(function (node) {
       if (node.isMesh) {
         // Enable shadow casting
@@ -68,6 +70,5 @@ export function X_wing() {
     jet.add(gltf.scene);
   });
 
-  jet.position.set(planePosition.x, planePosition.y, planePosition.z);
   return jet;
 }
