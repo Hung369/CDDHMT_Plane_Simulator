@@ -1,9 +1,9 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import { Boeing, F16 } from './Airplane';
+import { Boeing, F16, Propel } from './Airplane';
 import { sky_showroom, base_showroom } from './Texture_Loader';
 import { createDirectionalLight } from './LightSource';
-import { jet_camera, boeing_camera } from './Cam';
+import { plane_camera } from './Cam';
 
 var camera, scene, renderer;
 var cameraControls, lightSource;
@@ -30,11 +30,11 @@ function init(){
     scene.add(ground);
 
     // jet
-    jet_fighter = Boeing();
+    jet_fighter = Propel();
     scene.add(jet_fighter);
     
     // camera
-    camera = boeing_camera(scene, planePosition);
+    camera = plane_camera(scene, planePosition);
     scene.add(camera)
 
     // controller cam

@@ -51,11 +51,11 @@ export function Boeing() {
   return boeing;
 }
 
-export function X_wing() {
+export function Propel() {
   var jet = new THREE.Object3D();
   const loader = new GLTFLoader();
 
-  loader.load('./model/X_wing.glb', (gltf) => {
+  loader.load('./model/halifax.glb', (gltf) => {
     gltf.scene.traverse(function (node) {
       if (node.isMesh) {
         // Enable shadow casting
@@ -70,6 +70,6 @@ export function X_wing() {
     jet.add(gltf.scene);
   });
 
-  jet.position.set(planePosition.x, planePosition.y, planePosition.z);
+  // jet.position.set(boeingPosition.x, boeingPosition.y, boeingPosition.z);
   return jet;
 }
