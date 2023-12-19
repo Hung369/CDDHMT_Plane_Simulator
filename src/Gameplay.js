@@ -8,7 +8,7 @@ import { updatePlaneAxis } from './Controller'
 let camera, scene, renderer;
 let lightSource;
 let aircraft;
-export const planePosition = new THREE.Vector3(0, 3, 7);
+const planePosition = new THREE.Vector3(0, 3, 7);
 
 const jet_translation = new THREE.Vector3(0, 8, 8);
 const boeing_translation = new THREE.Vector3(0, 7, 40);
