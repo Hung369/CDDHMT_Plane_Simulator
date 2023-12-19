@@ -1,15 +1,18 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import { F16 } from './Airplane';
+import { F16, Boeing, X_wing } from './Airplane';
 import { sky_showroom, base_showroom } from './Texture_Loader';
 import { createDirectionalLight } from './LightSource';
-import { plane_camera } from './Cam';
+import { boeing_camera, jet_camera } from './Cam';
 import { updatePlaneAxis } from './Controller'
 
 let camera, scene, renderer;
 let lightSource;
-let jet_fighter;
+let aircraft;
 export const planePosition = new THREE.Vector3(0, 3, 7);
+
+const jet_translation = new THREE.Vector3(0, 8, 8);
+const boeing_translation = new THREE.Vector3(0, 7, 40);
 
 const x = new THREE.Vector3(1, 0, 0);
 const y = new THREE.Vector3(0, 1, 0);
@@ -38,11 +41,11 @@ function GameScene() {
     scene.add(ground);
 
     // jet
-    jet_fighter = F16();
-    scene.add(jet_fighter);
+    aircraft = Boeing();
+    scene.add(aircraft);
 
     // camera
-    camera = plane_camera(scene, planePosition);
+    camera = boeing_camera(scene, planePosition);
     scene.add(camera)
 
     // // controller cam
@@ -71,8 +74,8 @@ function render() {
         new THREE.Matrix4().makeTranslation(planePosition.x, planePosition.y, planePosition.z)
     ).multiply(rotMatrix);
 
-    jet_fighter.matrixAutoUpdate = false;
-    jet_fighter.matrix.copy(matrix);
+    aircraft.matrixAutoUpdate = false;
+    aircraft.matrix.copy(matrix);
 
     var quaternionA = new THREE.Quaternion().copy(delayedQuaternion);
     var quaternionB = new THREE.Quaternion();
@@ -89,7 +92,7 @@ function render() {
     const cameraMatrix = new THREE.Matrix4().multiply(
         new THREE.Matrix4().makeTranslation(planePosition.x, planePosition.y, planePosition.z))
         .multiply(delayedRotMatrix).multiply(new THREE.Matrix4().makeRotationX(-0.2))
-        .multiply(new THREE.Matrix4().makeTranslation(0, 8, 8)
+        .multiply(new THREE.Matrix4().makeTranslation(boeing_translation.x, boeing_translation.y, boeing_translation.z)
         );
 
     camera.matrixAutoUpdate = false;
