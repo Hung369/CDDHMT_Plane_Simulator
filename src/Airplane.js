@@ -1,8 +1,7 @@
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
 import * as THREE from 'three';
 
-const jetPosition = new THREE.Vector3(0,-4,7); // plane initial position
-const boeingPosition = new THREE.Vector3(0,2,7); // plane initial position
+export const planePosition = new THREE.Vector3(0,8,7);
 
 export function F16() {
   var jet = new THREE.Object3D();
@@ -23,7 +22,7 @@ export function F16() {
     jet.add(gltf.scene);
   });
 
-  jet.position.set(jetPosition.x, jetPosition.y, jetPosition.z);
+  jet.position.set(planePosition.x, planePosition.y, planePosition.z);
 
   return jet;
 }
@@ -47,12 +46,12 @@ export function Boeing() {
     boeing.add(gltf.scene);
   });
 
-  boeing.position.set(boeingPosition.x, boeingPosition.y, boeingPosition.z);
+  boeing.position.set(planePosition.x, planePosition.y, planePosition.z);
   return boeing;
 }
 
 export function Propel() {
-  var jet = new THREE.Object3D();
+  var propel = new THREE.Object3D();
   const loader = new GLTFLoader();
 
   loader.load('./src/model/halifax.glb', (gltf) => {
@@ -67,8 +66,8 @@ export function Propel() {
       }
     });
     gltf.scene.scale.set(0.8, 0.8, 0.8);
-    jet.add(gltf.scene);
+    propel.add(gltf.scene);
   });
-
-  return jet;
+  propel.position.set(planePosition.x, planePosition.y, planePosition.z);
+  return propel;
 }

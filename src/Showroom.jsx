@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
-import {  F16, Boeing, Propel } from "./Airplane";
+import {  F16, Boeing, Propel, planePosition } from "./Airplane";
 import { sky_showroom, base_showroom } from './Texture_Loader';
 import { createDirectionalLight } from './LightSource';
 import { plane_camera } from './Cam';
@@ -17,7 +17,6 @@ const ShowroomComponent = () => {
 
   const score = useSelector((state) => state.game.score);
   const isPlaying = useSelector((state) => state.game.isPlaying);
-  const planePosition = new THREE.Vector3(0, 3, 7);
 
   const jet_translation = new THREE.Vector3(0, 8, 8);
   const boeing_translation = new THREE.Vector3(0, 7, 40);
