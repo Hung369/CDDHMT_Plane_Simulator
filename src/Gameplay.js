@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { F16, Boeing, Propel } from './Airplane';
-import { sky_showroom, base_showroom } from './Texture_Loader';
+import { sky_showroom, base_showroom, terrain_showroom } from './Texture_Loader';
 import { createDirectionalLight } from './LightSource';
 import { plane_camera } from './Cam';
 import { updatePlaneAxis } from './Controller'
@@ -8,7 +8,7 @@ import { updatePlaneAxis } from './Controller'
 let camera, scene, renderer;
 let lightSource;
 let aircraft;
-const planePosition = new THREE.Vector3(0, 3, 7);
+const planePosition = new THREE.Vector3(0, 300, 7);
 
 const jet_translation = new THREE.Vector3(0, 8, 8);
 const boeing_translation = new THREE.Vector3(0, 7, 40);
@@ -33,11 +33,7 @@ function GameScene() {
     document.body.appendChild(renderer.domElement);
 
     // ground
-    let groundGeometry = new THREE.BoxGeometry(580, 0.01, 580);
-    let groundSurface = base_showroom();
-    let groundMaterial = new THREE.MeshPhongMaterial({ map: groundSurface });
-    let ground = new THREE.Mesh(groundGeometry, groundMaterial);
-    ground.receiveShadow = true;
+    var ground = terrain_showroom();
     scene.add(ground);
 
     // jet
