@@ -2,7 +2,7 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
 import * as THREE from 'three';
 
 const jetPosition = new THREE.Vector3(0,-4,7); // plane initial position
-const boeingPosition = new THREE.Vector3(0,2,7); // plane initial position
+const boeingPosition = new THREE.Vector3(0,200,7); // plane initial position
 
 export function F16() {
   var jet = new THREE.Object3D();
@@ -70,6 +70,6 @@ export function Propel() {
     jet.add(gltf.scene);
   });
 
-  // jet.position.set(boeingPosition.x, boeingPosition.y, boeingPosition.z);
+  jet.position.set(boeingPosition.x, boeingPosition.y, boeingPosition.z);
   return jet;
 }
