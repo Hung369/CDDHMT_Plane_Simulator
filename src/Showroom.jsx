@@ -4,6 +4,7 @@ import {  F16, Boeing, Propel, planePosition } from "./Airplane";
 import { sky_showroom, base_showroom } from './Texture_Loader';
 import { createDirectionalLight } from './LightSource';
 import { plane_camera } from './Cam';
+import { BufferOfTargets } from "./TargetPoint";
 import { updatePlaneAxis } from './Controller';
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -29,7 +30,7 @@ const ShowroomComponent = () => {
   const delayedRotMatrix = new THREE.Matrix4();
   const delayedQuaternion = new THREE.Quaternion();
 
-  const [time, setTime] = useState(5);
+  const [time, setTime] = useState(50);
 
   useEffect(() => {
     dispatch(setPlaying(true));
@@ -84,7 +85,7 @@ const ShowroomComponent = () => {
     mountRef.current.appendChild(renderer.domElement);
 
     // Ground setup
-    var groundGeometry = new THREE.BoxGeometry(580, 0.01, 580);
+    var groundGeometry = new THREE.BoxGeometry(1080, 0.01, 1080);
     var groundSurface = base_showroom();
     var groundMaterial = new THREE.MeshPhongMaterial({ map: groundSurface });
     var ground = new THREE.Mesh(groundGeometry, groundMaterial);
@@ -114,6 +115,9 @@ const ShowroomComponent = () => {
       new THREE.Color("rgb(0,0,255)")
     );
     scene.add(axesHelper);
+
+    const tarbuff = BufferOfTargets();
+    scene.add(new THREE.Mesh(tarbuff, new THREE.MeshStandardMaterial({roughness:0.5, metalness:0.5})));
 
     function render() { // render function
       updatePlaneAxis(x, y, z, planePosition, camera);
