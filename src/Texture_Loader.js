@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
 
 export function sky_showroom(){
     var sky = new THREE.TextureLoader().load("./scene/sky.jpg");
@@ -10,4 +11,17 @@ export function base_showroom(){
     var base = new THREE.TextureLoader().load("./scene/base.jpg");
     base.name = 'showroom_base';
     return base;
+}
+
+export function terrain_showroom(){
+    var terrain = new THREE.Object3D();
+    const loader = new GLTFLoader();
+
+    loader.load('./model/GrassPlain.glb', (gltf) => {
+        gltf.scene.scale.set(50, 50, 50);
+        terrain.add(gltf.scene);
+    });
+
+    terrain.name = "grass_plain"
+    return terrain;
 }
