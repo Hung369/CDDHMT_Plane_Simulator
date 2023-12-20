@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import { planePosition } from "./Airplane";
 
-const TARGET_RAD = 8;
+const TARGET_RAD = 6;
 let targets;
 let loopes = [];
 
@@ -56,9 +56,14 @@ export function CheckHit(scene) {
     const projected = planePosition.clone().sub(target.direction.clone().multiplyScalar(dist));
 
     const hitDist = projected.distanceTo(target.center);
-    if (hitDist < TARGET_RAD && Math.abs(dist) < 0.05) {
+    if (hitDist < TARGET_RAD && Math.abs(dist) < 0.08) {
       let gotItem = loopes.find((loope) => loope.name == target.name)
-      if(gotItem)  RemoveLoops(scene, gotItem)
+      if(gotItem) {
+        RemoveLoops(scene, gotItem);
+        const index = loopes.indexOf(gotItem);
+        if (index > -1) { loopes.splice(index, 1); }
+        console.log(loopes);
+      }
     }
   });
 }
