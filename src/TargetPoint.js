@@ -57,7 +57,7 @@ export function CheckHit(scene) {
     const projected = planePosition.clone().sub(target.direction.clone().multiplyScalar(dist));
 
     const hitDist = projected.distanceTo(target.center);
-    console.log(hitDist, dist)
+    // console.log(hitDist, dist)
     if (hitDist <= TARGET_RAD + 0.5 && Math.abs(dist) <= 1.0) {
       let gotItem = loopes.find((loope) => loope.name == target.name)
       if(gotItem) {
@@ -66,6 +66,6 @@ export function CheckHit(scene) {
         if (index > -1) { loopes.splice(index, 1); }
       }
     }
-    console.log(loopes.length);
+    // console.log(loopes.length);
   });
 }

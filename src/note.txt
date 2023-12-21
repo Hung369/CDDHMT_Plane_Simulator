@@ -1,1 +1,15 @@
 https://threejs.org/docs/#api/en/math/Box3.intersect
+
+let direction = [x, y, z, new THREE.Vector3( -1, 0, 0 ), new THREE.Vector3( 0, -1, 0 ), new THREE.Vector3( 0, -1, 0 )];
+    let pos = new THREE.Vector3(); 
+    aircraft.getWorldPosition(pos);
+    console.log(pos);
+    direction.forEach(element => {
+        let ray = new THREE.Raycaster(pos, element);
+        let collisionResults = ray.intersectObjects( ground );
+        console.log(collisionResults.length);
+        if ( collisionResults.length > 0)  {
+            console.log("Hit");
+        }
+        
+    });
