@@ -13,7 +13,7 @@ function RandomPoints(scaling) {
 
 function Targets() {
   const arr = [];
-  for (let i = 0; i < 1; i++) {
+  for (let i = 0; i < 25; i++) {
     arr.push({
       center: RandomPoints(new THREE.Vector3(4, 1, 4)).add(new THREE.Vector3(0, 8, 0)),
       direction: RandomPoints().normalize(), name: i.toString()
