@@ -1,14 +1,18 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
-import {  F16, Boeing, Propel, planePosition } from "./Airplane";
-import { sky_showroom, base_showroom } from './Texture_Loader';
-import { createDirectionalLight } from './LightSource';
-import { plane_camera } from './Cam';
+import { F16, Boeing, Propel, planePosition } from "./Airplane";
+import { sky_showroom, base_showroom } from "./Texture_Loader";
+import { createDirectionalLight } from "./LightSource";
+import { plane_camera } from "./Cam";
 import { BufferOfTargets, CheckHit } from "./TargetPoint";
-import { updatePlaneAxis } from './Controller';
+import { updatePlaneAxis } from "./Controller";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setPlaying } from "./redux/gameSlice";
+
+export const jet_translation = new THREE.Vector3(0, 8, 8);
+export const boeing_translation = new THREE.Vector3(0, 7, 40);
+export const prop_translation = new THREE.Vector3(0, 6, 20);
 
 const ShowroomComponent = () => {
   const mountRef = useRef(null);
@@ -19,10 +23,6 @@ const ShowroomComponent = () => {
   const score = useSelector((state) => state.game.score);
   const isPlaying = useSelector((state) => state.game.isPlaying);
 
-  const jet_translation = new THREE.Vector3(0, 8, 8);
-  const boeing_translation = new THREE.Vector3(0, 7, 40);
-  const prop_translation = new THREE.Vector3(0, 6, 20);
-  
   const x = new THREE.Vector3(1, 0, 0);
   const y = new THREE.Vector3(0, 1, 0);
   const z = new THREE.Vector3(0, 0, 1);
@@ -31,6 +31,8 @@ const ShowroomComponent = () => {
   const delayedQuaternion = new THREE.Quaternion();
 
   const [time, setTime] = useState(50);
+
+  var translation = jet_translation;
 
   useEffect(() => {
     dispatch(setPlaying(true));
@@ -70,8 +72,6 @@ const ShowroomComponent = () => {
     }
   };
 
-
-
   useEffect(() => {
     // Scene setup
     const scene = new THREE.Scene();
@@ -96,12 +96,27 @@ const ShowroomComponent = () => {
 
     // Jet setup
     var jet_fighter = F16();
+    switch (location.state.model) {
+      case "F16":
+        jet_fighter = F16();
+        translation = jet_translation;
+        break;
+      case "Boeing":
+        jet_fighter = Boeing();
+        translation = boeing_translation;
+        break;
+      case "Propel":
+        jet_fighter = Propel();
+        translation = prop_translation;
+        break;
+      default:
+        break;
+    }
     scene.add(jet_fighter);
 
     // Camera setup
     var camera = plane_camera(scene, planePosition);
     scene.add(camera);
-
 
     // Lightsource setup
     const lightSource = createDirectionalLight(0xf4e99b, 5.0);
@@ -119,12 +134,19 @@ const ShowroomComponent = () => {
 
     BufferOfTargets(scene);
 
-    function render() { // render function
+    function render() {
+      // render function
       updatePlaneAxis(x, y, z, planePosition, camera);
       const rotMatrix = new THREE.Matrix4().makeBasis(x, y, z);
-      const matrix = new THREE.Matrix4().multiply(
-          new THREE.Matrix4().makeTranslation(planePosition.x, planePosition.y, planePosition.z)
-      ).multiply(rotMatrix);
+      const matrix = new THREE.Matrix4()
+        .multiply(
+          new THREE.Matrix4().makeTranslation(
+            planePosition.x,
+            planePosition.y,
+            planePosition.z
+          )
+        )
+        .multiply(rotMatrix);
 
       jet_fighter.matrixAutoUpdate = false;
       jet_fighter.matrix.copy(matrix);
@@ -141,11 +163,23 @@ const ShowroomComponent = () => {
       delayedRotMatrix.identity();
       delayedRotMatrix.makeRotationFromQuaternion(delayedQuaternion);
 
-      const cameraMatrix = new THREE.Matrix4().multiply(
-          new THREE.Matrix4().makeTranslation(planePosition.x, planePosition.y, planePosition.z))
-          .multiply(delayedRotMatrix).multiply(new THREE.Matrix4().makeRotationX(-0.2))
-          .multiply(new THREE.Matrix4().makeTranslation(jet_translation.x, jet_translation.y, jet_translation.z)
-      );
+      const cameraMatrix = new THREE.Matrix4()
+        .multiply(
+          new THREE.Matrix4().makeTranslation(
+            planePosition.x,
+            planePosition.y,
+            planePosition.z
+          )
+        )
+        .multiply(delayedRotMatrix)
+        .multiply(new THREE.Matrix4().makeRotationX(-0.2))
+        .multiply(
+          new THREE.Matrix4().makeTranslation(
+            translation.x,
+            translation.y,
+            translation.z
+          )
+        );
 
       camera.matrixAutoUpdate = false;
       camera.matrix.copy(cameraMatrix);

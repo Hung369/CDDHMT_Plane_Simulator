@@ -6,8 +6,30 @@ import "../App.css";
 import cat1 from "../scene/1.jpg";
 import cat2 from "../scene/2.jpg";
 import cat3 from "../scene/Chovy.jpg";
+import { F16, Boeing, Propel, planePosition } from "../Airplane";
+import {
+  boeing_translation,
+  jet_translation,
+  prop_translation,
+} from "../Showroom";
 
-const models = [cat1, cat2, cat3];
+const models = [
+  {
+    url: cat1,
+    model: "F16",
+    trans: jet_translation,
+  },
+  {
+    url: cat2,
+    model: "Boeing",
+    trans: boeing_translation,
+  },
+  {
+    url: cat3,
+    model: "Propel",
+    trans: prop_translation,
+  },
+];
 
 const StartMenu = () => {
   const navigate = useNavigate();
@@ -18,10 +40,12 @@ const StartMenu = () => {
   const [chosenModel, setChosenModel] = useState(null);
   const [show, setShow] = useState(false);
 
-  console.log(gameState);
-
   const handleClickStart = () => {
-    navigate("/play");
+    if (chosenModel) {
+      navigate("/play", {
+        state: chosenModel,
+      });
+    }
   };
   const handleGetScore = () => {
     dispatch(getScore(10));
@@ -40,8 +64,8 @@ const StartMenu = () => {
     setShow((prev) => !prev);
   };
 
-  const handleClickModel = (e) => {
-    setChosenModel(e.target.src);
+  const handleClickModel = (model) => {
+    setChosenModel(model);
     setShow(false);
   };
   return (
@@ -58,13 +82,20 @@ const StartMenu = () => {
       </div>
       {show && (
         <div className="models">
-          {models.map((cat) => {
-            return <img onClick={handleClickModel} src={cat} alt="img" />;
+          {models.map((model) => {
+            return (
+              <img
+                onClick={() => handleClickModel(model)}
+                src={model.url}
+                key={model.url}
+                alt="img"
+              />
+            );
           })}
         </div>
       )}
       {chosenModel && (
-        <img className="chosenModel" src={chosenModel} alt="img" />
+        <img className="chosenModel" src={chosenModel.url} alt="img" />
       )}
     </div>
   );
