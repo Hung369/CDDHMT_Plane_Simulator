@@ -13,7 +13,7 @@ function RandomPoints(scaling) {
 
 function Targets() {
   const arr = [];
-  for (let i = 0; i < 30; i++) {
+  for (let i = 0; i < 5; i++) {
     arr.push({
       center: RandomPoints(new THREE.Vector3(4, 1, 4)).add(new THREE.Vector3(0, 8, 0)),
       direction: RandomPoints().normalize(), name: i.toString()
@@ -56,14 +56,15 @@ export function CheckHit(scene) {
     const projected = planePosition.clone().sub(target.direction.clone().multiplyScalar(dist));
 
     const hitDist = projected.distanceTo(target.center);
-    if (hitDist < TARGET_RAD && Math.abs(dist) < 0.08) {
+    // console.log(hitDist, dist)
+    if (hitDist <= TARGET_RAD + 0.5 && Math.abs(dist) <= 1.0) {
       let gotItem = loopes.find((loope) => loope.name == target.name)
       if(gotItem) {
         RemoveLoops(scene, gotItem);
         const index = loopes.indexOf(gotItem);
         if (index > -1) { loopes.splice(index, 1); }
-        console.log(loopes);
       }
     }
+    // console.log(loopes.length);
   });
 }
