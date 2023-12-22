@@ -32,6 +32,10 @@ const ShowroomComponent = () => {
 
   const [time, setTime] = useState(50);
 
+  let isAnimating = useRef(true);
+  let animationFrameId;
+  const animateRef = useRef();
+
   var translation = jet_translation;
 
   useEffect(() => {
@@ -60,6 +64,10 @@ const ShowroomComponent = () => {
   const handleResume = () => {
     setShow(false);
     dispatch(setPlaying(true));
+    if (!isAnimating.current) {
+      isAnimating.current = true;
+      animateRef.current(); // Khởi động lại animate
+    }
   };
   const handleExit = () => {
     navigate("/");
@@ -69,6 +77,8 @@ const ShowroomComponent = () => {
     if (event.key === "Escape") {
       dispatch(setPlaying(false));
       setShow(true); // This will toggle the show state
+      isAnimating.current = false;
+      window.cancelAnimationFrame(animationFrameId);
     }
   };
 
@@ -122,15 +132,6 @@ const ShowroomComponent = () => {
     const lightSource = createDirectionalLight(0xf4e99b, 5.0);
     lightSource.position.set(15, 15, 15);
     scene.add(lightSource);
-
-    // Axes helper
-    const axesHelper = new THREE.AxesHelper(500);
-    axesHelper.setColors(
-      new THREE.Color("rgb(255,0,0)"),
-      new THREE.Color("rgb(0,255,0)"),
-      new THREE.Color("rgb(0,0,255)")
-    );
-    scene.add(axesHelper);
 
     BufferOfTargets(scene);
 
@@ -191,22 +192,19 @@ const ShowroomComponent = () => {
     }
 
     // Animation loop
-    let frameId;
-    const animate = () => {
-      frameId = requestAnimationFrame(animate);
+    animateRef.current = () => {
+      if (!isAnimating.current) return; // Sử dụng current để truy cập giá trị của useRef
+      animationFrameId = requestAnimationFrame(animateRef.current);
       render();
-      // renderer.render(scene, camera);
     };
-
-    animate();
+    animateRef.current();
 
     // Clean up
     return () => {
+      window.cancelAnimationFrame(animationFrameId);
       if (mountRef.current && mountRef.current.contains(renderer.domElement)) {
         mountRef.current.removeChild(renderer.domElement);
       }
-      cancelAnimationFrame(frameId); // Stop the animation loop
-      // Additional cleanup for Three.js objects
     };
   }, []);
 
