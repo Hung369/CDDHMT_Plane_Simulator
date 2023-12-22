@@ -65,6 +65,11 @@ export function CheckHit(scene) {
         if (index > -1) { loopes.splice(index, 1); }
       }
     }
-    // console.log(loopes.length);
+    console.log(loopes.length);
   });
+}
+
+export function resetAll(){
+  targets = undefined;
+  loopes = [];
 }

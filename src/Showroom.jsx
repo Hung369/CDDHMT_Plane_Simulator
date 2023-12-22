@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
-import { F16, Boeing, Propel, planePosition } from "./Airplane";
-import { sky_showroom, base_showroom, terrain_showroom } from "./Texture_Loader";
+import { F16, Boeing, Propel, planePosition, resetPlane } from "./Airplane";
+import { sky_showroom, terrain_showroom } from "./Texture_Loader";
 import { createDirectionalLight } from "./LightSource";
 import { plane_camera } from "./Cam";
-import { BufferOfTargets, CheckHit } from "./TargetPoint";
-import { updatePlaneAxis } from "./Controller";
+import { BufferOfTargets, CheckHit, resetAll } from "./TargetPoint";
+import { reset, updatePlaneAxis } from "./Controller";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setPlaying } from "./redux/gameSlice";
@@ -23,9 +23,9 @@ const ShowroomComponent = () => {
   const score = useSelector((state) => state.game.score);
   const isPlaying = useSelector((state) => state.game.isPlaying);
 
-  const x = new THREE.Vector3(1, 0, 0);
-  const y = new THREE.Vector3(0, 1, 0);
-  const z = new THREE.Vector3(0, 0, 1);
+  let x = new THREE.Vector3(1, 0, 0);
+  let y = new THREE.Vector3(0, 1, 0);
+  let z = new THREE.Vector3(0, 0, 1);
 
   const delayedRotMatrix = new THREE.Matrix4();
   const delayedQuaternion = new THREE.Quaternion();
@@ -35,6 +35,7 @@ const ShowroomComponent = () => {
   let isAnimating = useRef(true);
   let animationFrameId;
   const animateRef = useRef();
+  const scene = new THREE.Scene();
 
   var translation = jet_translation;
 
@@ -70,6 +71,16 @@ const ShowroomComponent = () => {
     }
   };
   const handleExit = () => {
+    for( var i = scene.children.length - 1; i >= 0; i--) { 
+      obj = scene.children[i];
+      scene.remove(obj); 
+    }
+    reset();
+    resetAll();
+    x.set(1, 0, 0);
+    y.set(0, 1, 0);
+    z.set(0, 0, 1);
+    resetPlane();
     navigate("/");
   };
 
@@ -84,7 +95,7 @@ const ShowroomComponent = () => {
 
   useEffect(() => {
     // Scene setup
-    const scene = new THREE.Scene();
+    
     const skyscene = sky_showroom();
     scene.background = skyscene;
 

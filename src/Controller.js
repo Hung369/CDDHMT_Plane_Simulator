@@ -72,3 +72,9 @@ export function updatePlaneAxis(x, y, z, planePosition, camera) {
 
     planePosition.add(z.clone().multiplyScalar(-planeSpeed - turboSpeed)); // minus Z points forward
 }
+
+export function reset(){
+    jawVelocity = 0;
+    pitchVelocity = 0;
+    turbo = 0;
+}
