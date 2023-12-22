@@ -6,7 +6,7 @@ let targets;
 let loopes = [];
 
 function RandomPoints(scaling) {
-  let val = new THREE.Vector3(Math.random() * 501 - 200, Math.random() * 201, Math.random() * 501 - 200)
+  let val = new THREE.Vector3(Math.random() * 401 - 200, Math.random() * 101 + 500, Math.random() * 401 - 200)
     .multiply(scaling || new THREE.Vector3(1, 1, 1));
   return val;
 }
@@ -57,7 +57,7 @@ export function CheckHit(scene) {
 
     const hitDist = projected.distanceTo(target.center);
     // console.log(hitDist, dist)
-    if (hitDist <= TARGET_RAD + 0.5 && Math.abs(dist) <= 1.0) {
+    if (hitDist <= TARGET_RAD + 0.8 && Math.abs(dist) <= 1.0) {
       let gotItem = loopes.find((loope) => loope.name == target.name)
       if(gotItem) {
         RemoveLoops(scene, gotItem);

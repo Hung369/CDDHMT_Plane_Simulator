@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { F16, Boeing, Propel, planePosition } from "./Airplane";
-import { sky_showroom, base_showroom } from "./Texture_Loader";
+import { sky_showroom, base_showroom, terrain_showroom } from "./Texture_Loader";
 import { createDirectionalLight } from "./LightSource";
 import { plane_camera } from "./Cam";
 import { BufferOfTargets, CheckHit } from "./TargetPoint";
@@ -85,13 +85,7 @@ const ShowroomComponent = () => {
     mountRef.current.appendChild(renderer.domElement);
 
     // Ground setup
-    var groundGeometry = new THREE.BoxGeometry(1080, 0.01, 1080);
-    var groundSurface = base_showroom();
-
-    var groundMaterial = new THREE.MeshPhongMaterial({ map: groundSurface });
-    var ground = new THREE.Mesh(groundGeometry, groundMaterial);
-    ground.receiveShadow = true;
-    ground.position.set(0, 0, 0);
+    const ground = terrain_showroom();
     scene.add(ground);
 
     // Jet setup
