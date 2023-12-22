@@ -140,8 +140,30 @@ const ShowroomComponent = () => {
 
     BufferOfTargets(scene);
 
+    function collision() {
+      let raycaster = new THREE.Raycaster();
+      let pos = new THREE.Vector3(); 
+      jet_fighter.getWorldPosition(pos);
+      let direction = new THREE.Vector3();
+  
+      // Update the direction vector with the direction of the aircraft
+      direction.subVectors(pos, ground.position).normalize();
+  
+      // Set the raycaster to the position of the aircraft and point it in the direction of the terrain
+      raycaster.set(pos, direction);
+  
+      // Check if the ray intersects the terrain
+      let intersects = raycaster.intersectObject(ground);
+  
+      if (intersects.length > 0) {
+        console.log("Hit");
+      }
+    }  
+
     function render() {
       // render function
+      collision();
+      CheckHit(scene);
       updatePlaneAxis(x, y, z, planePosition, camera);
       const rotMatrix = new THREE.Matrix4().makeBasis(x, y, z);
       const matrix = new THREE.Matrix4()
@@ -190,8 +212,6 @@ const ShowroomComponent = () => {
       camera.matrixAutoUpdate = false;
       camera.matrix.copy(cameraMatrix);
       camera.matrixWorldNeedsUpdate = true;
-
-      CheckHit(scene);
 
       renderer.render(scene, camera);
     }
