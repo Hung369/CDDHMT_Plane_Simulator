@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { Boeing, F16, Propel } from './Airplane';
-import { sky_showroom, base_showroom, terrain_showroom } from './Texture_Loader';
+import { sky_showroom, base_showroom, terrain_showroom, city_showroom } from './Texture_Loader';
 import { createDirectionalLight } from './LightSource';
 import { plane_camera } from './Cam';
 
@@ -28,7 +28,7 @@ function init(){
     // var ground = new THREE.Mesh(groundGeometry, groundMaterial);
     // ground.receiveShadow = true;
     // scene.add(ground);
-    var ground = terrain_showroom();
+    var ground = city_showroom();
     scene.add(ground);
 
 

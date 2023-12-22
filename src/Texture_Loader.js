@@ -25,3 +25,16 @@ export function terrain_showroom(){
     terrain.name = "grass_plain"
     return terrain;
 }
+
+export function city_showroom(){
+    var terrain = new THREE.Object3D();
+    const loader = new GLTFLoader();
+
+    loader.load('./model/City.glb', (gltf) => {
+        gltf.scene.scale.set(100, 100, 100);
+        terrain.add(gltf.scene);
+    });
+
+    terrain.name = "city"
+    return terrain;
+}
