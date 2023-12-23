@@ -5,13 +5,13 @@ const TARGET_RAD = 8;
 let targets;
 let loopes = [];
 
-function RandomPoints(scaling) {
+function RandomPoints(scaling) { // position
   let val = new THREE.Vector3(Math.random() * 400 - 200, Math.random() * 101 + 500, Math.random() * 400 - 200)
     .multiply(scaling || new THREE.Vector3(1, 1, 1));
   return val;
 }
 
-function RandomDirection(){
+function RandomDirection(){ // direction
   return new THREE.Vector3(Math.random() * 2 - 1, Math.random() * 2 - 1, Math.random() * 2 - 1).multiply(new THREE.Vector3(1, 1, 1))
 }
 
@@ -67,9 +67,10 @@ export function CheckHit(scene) {
         RemoveLoops(scene, gotItem);
         const index = loopes.indexOf(gotItem);
         if (index > -1) { loopes.splice(index, 1); }
+        // update điểm
       }
     }
-    console.log(loopes.length);
+    // console.log(loopes.length);
   });
 }
 

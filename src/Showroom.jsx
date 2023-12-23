@@ -32,7 +32,7 @@ const ShowroomComponent = () => {
   const delayedRotMatrix = new THREE.Matrix4();
   const delayedQuaternion = new THREE.Quaternion();
 
-  const [time, setTime] = useState(5);
+  const [time, setTime] = useState(50);
 
   let isAnimating = useRef(true);
   let animationFrameId;
@@ -58,6 +58,8 @@ const ShowroomComponent = () => {
       audio.pause();
       setPlaying(false);
       setShow(true);
+      isAnimating.current = false;
+      window.cancelAnimationFrame(animationFrameId);
     }
 
     return () => clearInterval(timer);
@@ -165,6 +167,11 @@ const ShowroomComponent = () => {
 
       if (intersects.length > 0) {
         console.log("Hit");
+        // update end game
+      }
+
+      if(pos.x < -1509.96 || pos.z < -1505.18 || pos.x > 1509.73 || pos.z > 1509.20){
+        console.log("Out of Range");
       }
     }
 
