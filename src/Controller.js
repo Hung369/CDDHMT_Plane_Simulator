@@ -14,10 +14,10 @@ window.addEventListener("keyup", (e) => {
     controls[e.key.toLowerCase()] = false;
 });
 
-let maxVelocity = 0.8;
+let maxVelocity = 2.5;
 let jawVelocity = 0;
 let pitchVelocity = 0;
-let planeSpeed = 0.3;
+let planeSpeed = 0.5;
 export let turbo = 0;
 export function updatePlaneAxis(x, y, z, planePosition, camera) {
     jawVelocity *= 0.95;
@@ -58,7 +58,7 @@ export function updatePlaneAxis(x, y, z, planePosition, camera) {
 
     // plane position & velocity
     if (controls.shift) {
-        turbo += 0.1;
+        turbo += 0.2;
     } else {
         turbo *= 0.95;
     }

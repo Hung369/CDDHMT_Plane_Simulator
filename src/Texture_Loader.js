@@ -21,7 +21,7 @@ export function terrain_showroom(){
     const loader = new GLTFLoader();
 
     loader.load('./src/model/GrassPlain.glb', (gltf) => {
-        gltf.scene.scale.set(100, 100, 100);
+        gltf.scene.scale.set(200, 200, 200);
         terrain.add(gltf.scene);
     });
 

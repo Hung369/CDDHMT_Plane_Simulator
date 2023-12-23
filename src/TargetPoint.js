@@ -1,22 +1,27 @@
 import * as THREE from "three";
 import { planePosition } from "./Airplane";
 
-const TARGET_RAD = 6;
+const TARGET_RAD = 8;
 let targets;
 let loopes = [];
 
 function RandomPoints(scaling) {
-  let val = new THREE.Vector3(Math.random() * 401 - 200, Math.random() * 101 + 500, Math.random() * 401 - 200)
+  let val = new THREE.Vector3(Math.random() * 400 - 200, Math.random() * 101 + 500, Math.random() * 400 - 200)
     .multiply(scaling || new THREE.Vector3(1, 1, 1));
   return val;
+}
+
+function RandomDirection(){
+  return new THREE.Vector3(Math.random() * 2 - 1, Math.random() * 2 - 1, Math.random() * 2 - 1).multiply(new THREE.Vector3(1, 1, 1))
 }
 
 function Targets() {
   const arr = [];
   for (let i = 0; i < 5; i++) {
     arr.push({
-      center: RandomPoints(new THREE.Vector3(4, 1, 4)).add(new THREE.Vector3(0, 8, 0)),
-      direction: RandomPoints().normalize(), name: i.toString()
+      center: RandomPoints(new THREE.Vector3(4, 1, 4)).add(new THREE.Vector3(0, 2 + Math.random() * 2, 0)),
+      direction: RandomDirection().normalize(), 
+      name: i.toString()
     });
   }
   return arr;
@@ -56,8 +61,7 @@ export function CheckHit(scene) {
     const projected = planePosition.clone().sub(target.direction.clone().multiplyScalar(dist));
 
     const hitDist = projected.distanceTo(target.center);
-    // console.log(hitDist, dist)
-    if (hitDist <= TARGET_RAD + 0.8 && Math.abs(dist) <= 1.0) {
+    if (hitDist <= TARGET_RAD) {
       let gotItem = loopes.find((loope) => loope.name == target.name)
       if(gotItem) {
         RemoveLoops(scene, gotItem);

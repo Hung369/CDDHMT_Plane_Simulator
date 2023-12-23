@@ -1,7 +1,7 @@
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
 import * as THREE from 'three';
 
-export let planePosition = new THREE.Vector3(0,300,7);
+export let planePosition = new THREE.Vector3(0,500,7);
 
 export function F16() {
   var jet = new THREE.Object3D();
@@ -74,5 +74,5 @@ export function Propel() {
 
 
 export function resetPlane(){
-  planePosition = new THREE.Vector3(0,300,7);
+  planePosition = new THREE.Vector3(0,500,7);
 }
