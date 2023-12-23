@@ -17,7 +17,7 @@ function RandomDirection(){
 
 function Targets() {
   const arr = [];
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < 15; i++) {
     arr.push({
       center: RandomPoints(new THREE.Vector3(4, 1, 4)).add(new THREE.Vector3(0, 2 + Math.random() * 2, 0)),
       direction: RandomDirection().normalize(), 

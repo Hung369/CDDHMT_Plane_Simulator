@@ -109,6 +109,9 @@ const ShowroomComponent = () => {
     const ground = terrain_showroom();
     scene.add(ground);
 
+    // Fog setup
+    scene.fog = new THREE.Fog(0xABAEB0, 1000, 1500);
+
     // Jet setup
     var jet_fighter = F16();
     switch (location.state.model) {
@@ -134,8 +137,8 @@ const ShowroomComponent = () => {
     scene.add(camera);
 
     // Lightsource setup
-    const lightSource = createDirectionalLight(0xf4e99b, 5.0);
-    lightSource.position.set(15, 15, 15);
+    const lightSource = createDirectionalLight(0xf4e99b, 2.0);
+    lightSource.position.set(100000, 100000, 100000);
     scene.add(lightSource);
 
     BufferOfTargets(scene);
