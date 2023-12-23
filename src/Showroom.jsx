@@ -252,7 +252,7 @@ const ShowroomComponent = () => {
   useEffect(() => {
     // Configure audio properties
     audio.loop = true;
-    audio.volume = 0.5;
+    audio.volume = 1;
 
     // Try to play the audio
     audio.play().catch((error) => console.error("Audio play failed:", error));
