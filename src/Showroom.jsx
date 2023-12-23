@@ -9,6 +9,7 @@ import { reset, updatePlaneAxis } from "./Controller";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setPlaying } from "./redux/gameSlice";
+import backgroundAudio from "./Audio/PlaneSoundTrack.mp4";
 
 export const jet_translation = new THREE.Vector3(0, 8, 8);
 export const boeing_translation = new THREE.Vector3(0, 7, 40);
@@ -19,6 +20,7 @@ const ShowroomComponent = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [audio] = useState(new Audio(backgroundAudio));
 
   const score = useSelector((state) => state.game.score);
   const isPlaying = useSelector((state) => state.game.isPlaying);
@@ -30,7 +32,7 @@ const ShowroomComponent = () => {
   const delayedRotMatrix = new THREE.Matrix4();
   const delayedQuaternion = new THREE.Quaternion();
 
-  const [time, setTime] = useState(50);
+  const [time, setTime] = useState(5);
 
   let isAnimating = useRef(true);
   let animationFrameId;
@@ -53,6 +55,7 @@ const ShowroomComponent = () => {
       clearInterval(timer);
     }
     if (time == 0) {
+      audio.pause();
       setPlaying(false);
       setShow(true);
     }
@@ -67,13 +70,14 @@ const ShowroomComponent = () => {
     dispatch(setPlaying(true));
     if (!isAnimating.current) {
       isAnimating.current = true;
-      animateRef.current(); // Khởi động lại animate
+      animateRef.current(); // Resume animation
+      audio.play().catch((error) => console.log("Error playing audio:", error)); // Attempt to play audio
     }
   };
   const handleExit = () => {
-    for( var i = scene.children.length - 1; i >= 0; i--) { 
+    for (var i = scene.children.length - 1; i >= 0; i--) {
       obj = scene.children[i];
-      scene.remove(obj); 
+      scene.remove(obj);
     }
     reset();
     resetAll();
@@ -87,15 +91,16 @@ const ShowroomComponent = () => {
   const handlePause = (event) => {
     if (event.key === "Escape") {
       dispatch(setPlaying(false));
-      setShow(true); // This will toggle the show state
+      setShow(true);
       isAnimating.current = false;
       window.cancelAnimationFrame(animationFrameId);
+      audio.pause();
     }
   };
 
   useEffect(() => {
     // Scene setup
-    
+
     const skyscene = sky_showroom();
     scene.background = skyscene;
 
@@ -145,23 +150,23 @@ const ShowroomComponent = () => {
 
     function collision() {
       let raycaster = new THREE.Raycaster();
-      let pos = new THREE.Vector3(); 
+      let pos = new THREE.Vector3();
       jet_fighter.getWorldPosition(pos);
       let direction = new THREE.Vector3();
-  
+
       // Update the direction vector with the direction of the aircraft
       direction.subVectors(pos, ground.position).normalize();
-  
+
       // Set the raycaster to the position of the aircraft and point it in the direction of the terrain
       raycaster.set(pos, direction);
-  
+
       // Check if the ray intersects the terrain
       let intersects = raycaster.intersectObject(ground);
-  
+
       if (intersects.length > 0) {
         console.log("Hit");
       }
-    }  
+    }
 
     function render() {
       // render function
@@ -243,6 +248,20 @@ const ShowroomComponent = () => {
       window.removeEventListener("keydown", handlePause);
     };
   }, [isPlaying]);
+
+  useEffect(() => {
+    // Configure audio properties
+    audio.loop = true;
+    audio.volume = 0.5;
+
+    // Try to play the audio
+    audio.play().catch((error) => console.error("Audio play failed:", error));
+
+    // Cleanup function to pause audio when component unmounts
+    return () => {
+      audio.pause();
+    };
+  }, [audio]);
 
   return (
     <div style={{ width: "100vw", height: "100vh", position: "relative" }}>

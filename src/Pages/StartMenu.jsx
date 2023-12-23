@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getScore, resetScore, setPlaying } from "../redux/gameSlice";
@@ -12,6 +12,7 @@ import {
   jet_translation,
   prop_translation,
 } from "../Showroom";
+import menuaudio from "../Audio/MenuMusic.mp4";
 
 const models = [
   {
@@ -40,6 +41,18 @@ const StartMenu = () => {
   const [chosenModel, setChosenModel] = useState(null);
   const [show, setShow] = useState(false);
 
+  const [audio] = useState(new Audio(menuaudio));
+  const [isAudioPlaying, setIsAudioPlaying] = useState(false);
+
+  const playAudio = () => {
+    audio
+      .play()
+      .then(() => {
+        setIsAudioPlaying(true); // Update state khi audio bắt đầu phát
+      })
+      .catch((error) => console.log("Error with playing audio:", error));
+  };
+
   const handleClickStart = () => {
     if (chosenModel) {
       navigate("/play", {
@@ -62,12 +75,21 @@ const StartMenu = () => {
 
   const handleChooseModels = () => {
     setShow((prev) => !prev);
+    if (!isAudioPlaying) {
+      playAudio(); // Phát audio khi người dùng click "Choose"
+    }
   };
 
   const handleClickModel = (model) => {
     setChosenModel(model);
     setShow(false);
   };
+  useEffect(() => {
+    return () => {
+      audio.pause(); // Dừng phát audio khi component unmount
+    };
+  }, [audio]);
+
   return (
     <div id="Menu">
       {/* <h1>Score: {gameState.score}</h1>
