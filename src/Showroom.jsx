@@ -10,7 +10,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setPlaying } from "./redux/gameSlice";
 import backgroundAudio from "./Audio/PlaneSoundTrack.mp4";
-import { getScore } from "./redux/gameSlice";
+import { getScore, resetScore } from "./redux/gameSlice";
 
 export const jet_translation = new THREE.Vector3(0, 8, 8);
 export const boeing_translation = new THREE.Vector3(0, 7, 40);
@@ -61,10 +61,11 @@ const ShowroomComponent = () => {
       setShow(true);
       isAnimating.current = false;
       window.cancelAnimationFrame(animationFrameId);
+      dispatch(resetScore());
     }
 
     return () => clearInterval(timer);
-  }, [isPlaying, time]); // add time and isPaused as dependencies
+  }, [isPlaying, time, dispatch, audio]); // add time and isPaused as dependencies
 
   const [show, setShow] = useState(false);
 
@@ -84,6 +85,7 @@ const ShowroomComponent = () => {
     }
     reset();
     resetAll();
+    dispatch(resetScore());
     x.set(1, 0, 0);
     y.set(0, 1, 0);
     z.set(0, 0, 1);
