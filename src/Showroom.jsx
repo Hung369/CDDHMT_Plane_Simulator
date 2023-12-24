@@ -10,6 +10,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setPlaying } from "./redux/gameSlice";
 import backgroundAudio from "./Audio/PlaneSoundTrack.mp4";
+import { getScore } from "./redux/gameSlice";
 
 export const jet_translation = new THREE.Vector3(0, 8, 8);
 export const boeing_translation = new THREE.Vector3(0, 7, 40);
@@ -32,7 +33,7 @@ const ShowroomComponent = () => {
   const delayedRotMatrix = new THREE.Matrix4();
   const delayedQuaternion = new THREE.Quaternion();
 
-  const [time, setTime] = useState(50);
+  const [time, setTime] = useState(500);
 
   let isAnimating = useRef(true);
   let animationFrameId;
@@ -117,7 +118,7 @@ const ShowroomComponent = () => {
     scene.add(ground);
 
     // Fog setup
-    scene.fog = new THREE.Fog(0xABAEB0, 1000, 1500);
+    scene.fog = new THREE.Fog(0xabaeb0, 1000, 1500);
 
     // Jet setup
     var jet_fighter = F16();
@@ -170,7 +171,12 @@ const ShowroomComponent = () => {
         // update end game
       }
 
-      if(pos.x < -1509.96 || pos.z < -1505.18 || pos.x > 1509.73 || pos.z > 1509.20){
+      if (
+        pos.x < -1509.96 ||
+        pos.z < -1505.18 ||
+        pos.x > 1509.73 ||
+        pos.z > 1509.2
+      ) {
         console.log("Out of Range");
       }
     }
@@ -178,7 +184,7 @@ const ShowroomComponent = () => {
     function render() {
       // render function
       collision();
-      CheckHit(scene);
+      CheckHit(scene, dispatch, getScore);
       updatePlaneAxis(x, y, z, planePosition, camera);
       const rotMatrix = new THREE.Matrix4().makeBasis(x, y, z);
       const matrix = new THREE.Matrix4()
