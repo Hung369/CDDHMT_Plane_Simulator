@@ -62,7 +62,6 @@ const ShowroomComponent = () => {
       setShow(true);
       isAnimating.current = false;
       window.cancelAnimationFrame(animationFrameId);
-      dispatch(resetScore());
     }
 
     return () => clearInterval(timer);
@@ -175,7 +174,6 @@ const ShowroomComponent = () => {
         audio.pause();
         dispatch(setPlaying(false));
         setShow(true);
-        dispatch(resetScore());
         if (isAnimating.current) {
           window.cancelAnimationFrame(animationFrameId);
           isAnimating.current = false;
@@ -193,7 +191,6 @@ const ShowroomComponent = () => {
         audio.pause();
         dispatch(setPlaying(false));
         setShow(true);
-        dispatch(resetScore());
         if (isAnimating.current) {
           window.cancelAnimationFrame(animationFrameId);
           isAnimating.current = false;

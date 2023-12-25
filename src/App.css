@@ -59,7 +59,7 @@
   display: flex;
   justify-content: space-between;
 }
-#GameController div{
+#GameController div {
   padding: 1rem;
   height: 100%;
   color: black;
@@ -77,15 +77,16 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  color: tomato;
 }
 
-#Modal .controller{
+#Modal .controller {
   display: flex;
   flex-direction: row;
- justify-content: center;
- align-items: center;
+  justify-content: center;
+  align-items: center;
   gap: 20px;
 }
-#Modal .controller button{
+#Modal .controller button {
   max-width: 100px;
 }
