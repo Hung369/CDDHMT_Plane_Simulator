@@ -21,7 +21,6 @@ const ShowroomComponent = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [audio] = useState(new Audio(backgroundAudio));
 
   const score = useSelector((state) => state.game.score);
   const isPlaying = useSelector((state) => state.game.isPlaying);
@@ -35,6 +34,7 @@ const ShowroomComponent = () => {
   const delayedQuaternion = new THREE.Quaternion();
 
   const [time, setTime] = useState(360);
+  const [audio] = useState(new Audio(backgroundAudio));
   const [hitbox, setHitbox] = useState(false);
 
   let isAnimating = useRef(true);
@@ -53,6 +53,7 @@ const ShowroomComponent = () => {
       audio.play().catch((error) => console.log("Error playing audio:", error));
     }
   };
+
   const handleExit = () => {
     for (var i = scene.children.length - 1; i >= 0; i--) {
       obj = scene.children[i];
@@ -268,7 +269,7 @@ const ShowroomComponent = () => {
     }
 
     return () => clearInterval(timer);
-  }, [isPlaying, time, dispatch, audio]); // add time and isPaused as dependencies
+  }, [isPlaying, time, dispatch, audio]);
 
   useEffect(() => {
     window.addEventListener("keydown", handlePause);
