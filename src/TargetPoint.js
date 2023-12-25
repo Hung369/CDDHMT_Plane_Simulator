@@ -27,7 +27,7 @@ function RandomDirection() {
 
 function Targets() {
   const arr = [];
-  for (let i = 0; i < 15; i++) {
+  for (let i = 0; i < 20; i++) {
     arr.push({
       center: RandomPoints(new THREE.Vector3(4, 1, 4)).add(
         new THREE.Vector3(0, 2 + Math.random() * 2, 0)
@@ -93,7 +93,6 @@ export function CheckHit(scene, dispatch, getScoreAction) {
         }
       }
     }
-    // console.log(loopes.length);
   });
 }
 

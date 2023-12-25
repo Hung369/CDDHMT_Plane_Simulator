@@ -33,7 +33,7 @@ const ShowroomComponent = () => {
   const delayedRotMatrix = new THREE.Matrix4();
   const delayedQuaternion = new THREE.Quaternion();
 
-  const [time, setTime] = useState(15);
+  const [time, setTime] = useState(360);
   const [hitbox, setHitbox] = useState(false);
 
   let isAnimating = useRef(true);
@@ -169,7 +169,6 @@ const ShowroomComponent = () => {
       let intersects = raycaster.intersectObject(ground);
 
       if (intersects.length > 0 && intersects[0].distance < direction.length()) {
-        console.log("hit");
         setHitbox(true);
         audio.pause();
         dispatch(setPlaying(false));
@@ -186,7 +185,6 @@ const ShowroomComponent = () => {
         pos.x > 1509.73 ||
         pos.z > 1509.2
       ) {
-        console.log("Out of Range");
         setHitbox(true);
         audio.pause();
         dispatch(setPlaying(false));

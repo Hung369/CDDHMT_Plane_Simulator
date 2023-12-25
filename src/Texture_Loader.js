@@ -23,9 +23,6 @@ export function terrain_showroom(){
     loader.load('./src/model/GrassPlain.glb', (gltf) => {
         gltf.scene.scale.set(200, 200, 200);
         terrain.add(gltf.scene);
-        // let bbox = new THREE.Box3().setFromObject(gltf.scene);
-        // console.log('bounding box coordinates: ' + bbox.min.x + ', ' + bbox.min.y + ', ' + bbox.min.z + '), ' + 
-        // '(' + bbox.max.x + ', ' + bbox.max.y + ', ' + bbox.max.z + ')' );
     });
 
     terrain.name = "grass_plain"
