@@ -3,10 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getScore, resetScore, setPlaying } from "../redux/gameSlice";
 import "../App.css";
-import cat1 from "../scene/1.jpg";
-import cat2 from "../scene/2.jpg";
-import cat3 from "../scene/Chovy.jpg";
-import { F16, Boeing, Propel, planePosition } from "../Airplane";
+import airPlane1 from "../scene/F16.jpg";
+import airPlane2 from "../scene/B52.jpg";
+import airPlane3 from "../scene/halifax.jpg";
 import {
   boeing_translation,
   jet_translation,
@@ -16,17 +15,17 @@ import menuaudio from "../Audio/MenuMusic.mp4";
 
 const models = [
   {
-    url: cat1,
+    url: airPlane1,
     model: "F16",
     trans: jet_translation,
   },
   {
-    url: cat2,
+    url: airPlane2,
     model: "Boeing",
     trans: boeing_translation,
   },
   {
-    url: cat3,
+    url: airPlane3,
     model: "Propel",
     trans: prop_translation,
   },
@@ -92,12 +91,6 @@ const StartMenu = () => {
 
   return (
     <div id="Menu">
-      {/* <h1>Score: {gameState.score}</h1>
-      <h1>IsPlaying: {gameState.isPlaying.toString()}</h1> */}
-      {/* <button onClick={handleGetScore}>getScore</button>
-      <button onClick={handleReset}>resetScore</button>
-      <button onClick={handlePause}>pause</button>
-      <button onClick={handleResume}>resume</button> */}
       <div className="controller">
         {chosenModel && <button onClick={handleClickStart}>Start</button>}
         <button onClick={handleChooseModels}>Choose</button>

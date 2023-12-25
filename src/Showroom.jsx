@@ -25,6 +25,7 @@ const ShowroomComponent = () => {
 
   const score = useSelector((state) => state.game.score);
   const isPlaying = useSelector((state) => state.game.isPlaying);
+  const [show, setShow] = useState(false);
 
   let x = new THREE.Vector3(1, 0, 0);
   let y = new THREE.Vector3(0, 1, 0);
@@ -37,37 +38,11 @@ const ShowroomComponent = () => {
   const [hitbox, setHitbox] = useState(false);
 
   let isAnimating = useRef(true);
-  let animationFrameId;
   const animateRef = useRef();
+  let animationFrameId;
+
   const scene = new THREE.Scene();
-
   var translation = jet_translation;
-
-  useEffect(() => {
-    dispatch(setPlaying(true));
-  }, []);
-
-  useEffect(() => {
-    let timer;
-    if (isPlaying && time > 0) {
-      timer = setInterval(() => {
-        setTime((prevTime) => prevTime - 1);
-      }, 1000);
-    } else if (!isPlaying) {
-      clearInterval(timer);
-    }
-    if (time == 0) {
-      audio.pause();
-      setPlaying(false);
-      setShow(true);
-      isAnimating.current = false;
-      window.cancelAnimationFrame(animationFrameId);
-    }
-
-    return () => clearInterval(timer);
-  }, [isPlaying, time, dispatch, audio]); // add time and isPaused as dependencies
-
-  const [show, setShow] = useState(false);
 
   const handleResume = () => {
     setShow(false);
@@ -75,7 +50,7 @@ const ShowroomComponent = () => {
     if (!isAnimating.current) {
       isAnimating.current = true;
       animateRef.current(); // Resume animation
-      audio.play().catch((error) => console.log("Error playing audio:", error)); // Attempt to play audio
+      audio.play().catch((error) => console.log("Error playing audio:", error));
     }
   };
   const handleExit = () => {
@@ -168,7 +143,10 @@ const ShowroomComponent = () => {
       // Check if the ray intersects the terrain
       let intersects = raycaster.intersectObject(ground);
 
-      if (intersects.length > 0 && intersects[0].distance < direction.length()) {
+      if (
+        intersects.length > 0 &&
+        intersects[0].distance < direction.length()
+      ) {
         setHitbox(true);
         audio.pause();
         dispatch(setPlaying(false));
@@ -268,6 +246,29 @@ const ShowroomComponent = () => {
       }
     };
   }, []);
+  useEffect(() => {
+    dispatch(setPlaying(true));
+  }, []);
+
+  useEffect(() => {
+    let timer;
+    if (isPlaying && time > 0) {
+      timer = setInterval(() => {
+        setTime((prevTime) => prevTime - 1);
+      }, 1000);
+    } else if (!isPlaying) {
+      clearInterval(timer);
+    }
+    if (time == 0) {
+      audio.pause();
+      setPlaying(false);
+      setShow(true);
+      isAnimating.current = false;
+      window.cancelAnimationFrame(animationFrameId);
+    }
+
+    return () => clearInterval(timer);
+  }, [isPlaying, time, dispatch, audio]); // add time and isPaused as dependencies
 
   useEffect(() => {
     window.addEventListener("keydown", handlePause);
