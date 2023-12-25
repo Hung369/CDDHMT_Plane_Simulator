@@ -34,6 +34,7 @@ const ShowroomComponent = () => {
   const delayedQuaternion = new THREE.Quaternion();
 
   const [time, setTime] = useState(500);
+  const [hitbox, setHitbox] = useState(false);
 
   let isAnimating = useRef(true);
   let animationFrameId;
@@ -169,8 +170,16 @@ const ShowroomComponent = () => {
       let intersects = raycaster.intersectObject(ground);
 
       if (intersects.length > 0) {
-        console.log("Hit");
-        // update end game
+        console.log("hit");
+        setHitbox(true);
+        audio.pause();
+        dispatch(setPlaying(false));
+        setShow(true);
+        dispatch(resetScore());
+        if (isAnimating.current) {
+          window.cancelAnimationFrame(animationFrameId);
+          isAnimating.current = false;
+        }
       }
 
       if (
@@ -180,6 +189,15 @@ const ShowroomComponent = () => {
         pos.z > 1509.2
       ) {
         console.log("Out of Range");
+        setHitbox(true);
+        audio.pause();
+        dispatch(setPlaying(false));
+        setShow(true);
+        dispatch(resetScore());
+        if (isAnimating.current) {
+          window.cancelAnimationFrame(animationFrameId);
+          isAnimating.current = false;
+        }
       }
     }
 
@@ -288,7 +306,9 @@ const ShowroomComponent = () => {
         <div id="Modal">
           <h1>Score: {score}</h1>
           <div className="controller">
-            {time > 0 && <button onClick={handleResume}>Resume</button>}
+            {time > 0 && !hitbox && (
+              <button onClick={handleResume}>Resume</button>
+            )}
             <button onClick={handleExit}>Exit</button>
           </div>
         </div>
