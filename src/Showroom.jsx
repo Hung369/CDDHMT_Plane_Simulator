@@ -33,7 +33,7 @@ const ShowroomComponent = () => {
   const delayedRotMatrix = new THREE.Matrix4();
   const delayedQuaternion = new THREE.Quaternion();
 
-  const [time, setTime] = useState(500);
+  const [time, setTime] = useState(15);
   const [hitbox, setHitbox] = useState(false);
 
   let isAnimating = useRef(true);
@@ -168,7 +168,7 @@ const ShowroomComponent = () => {
       // Check if the ray intersects the terrain
       let intersects = raycaster.intersectObject(ground);
 
-      if (intersects.length > 0) {
+      if (intersects.length > 0 && intersects[0].distance < direction.length()) {
         console.log("hit");
         setHitbox(true);
         audio.pause();

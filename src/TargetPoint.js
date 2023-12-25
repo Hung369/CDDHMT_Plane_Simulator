@@ -40,7 +40,6 @@ function Targets() {
 }
 
 export function BufferOfTargets(scene) {
-  let i = 0;
   targets = Targets();
 
   targets.forEach((target) => {
@@ -59,7 +58,6 @@ export function BufferOfTargets(scene) {
     loope.name = target.name;
     loopes.push(loope);
     scene.add(loope);
-    i += 1;
   });
 }
 
