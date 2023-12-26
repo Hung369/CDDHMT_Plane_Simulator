@@ -13,8 +13,8 @@ import backgroundAudio from "./Audio/PlaneSoundTrack.mp4";
 import { getScore, resetScore } from "./redux/gameSlice";
 
 export const jet_translation = new THREE.Vector3(0, 8, 8);
-export const boeing_translation = new THREE.Vector3(0, 7, 40);
-export const prop_translation = new THREE.Vector3(0, 6, 20);
+export const boeing_translation = new THREE.Vector3(0, 7, 42);
+export const prop_translation = new THREE.Vector3(0, 6, 24);
 
 const ShowroomComponent = () => {
   const mountRef = useRef(null);
