@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getScore, resetScore, setPlaying } from "../redux/gameSlice";
 import "../App.css";
-import airPlane1 from "../scene/F16.jpg";
-import airPlane2 from "../scene/B52.jpg";
-import airPlane3 from "../scene/halifax.jpg";
+import airPlane1 from "/scene/F16.jpg";
+import airPlane2 from "/scene/B52.jpg";
+import airPlane3 from "/scene/halifax.jpg";
 import {
   boeing_translation,
   jet_translation,

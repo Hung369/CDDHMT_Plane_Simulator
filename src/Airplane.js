@@ -7,7 +7,7 @@ export function F16() {
   var jet = new THREE.Object3D();
   const loader = new GLTFLoader();
 
-  loader.load('./src/model/F16_jet.glb', (gltf) => {
+  loader.load('/model/F16_jet.glb', (gltf) => {
     gltf.scene.traverse(function (node) {
       if (node.isMesh) {
         // Enable shadow casting
@@ -31,7 +31,7 @@ export function Boeing() {
   var boeing = new THREE.Object3D();
   const loader = new GLTFLoader();
 
-  loader.load('./src/model/boeing_52.glb', (gltf) => {
+  loader.load('/model/boeing_52.glb', (gltf) => {
     gltf.scene.traverse(function (node) {
       if (node.isMesh) {
         // Enable shadow casting
@@ -54,7 +54,7 @@ export function Propel() {
   var propel = new THREE.Object3D();
   const loader = new GLTFLoader();
 
-  loader.load('./src/model/halifax.glb', (gltf) => {
+  loader.load('/model/halifax.glb', (gltf) => {
     gltf.scene.traverse(function (node) {
       if (node.isMesh) {
         // Enable shadow casting
