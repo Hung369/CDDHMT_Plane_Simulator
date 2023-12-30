@@ -22,7 +22,7 @@ function RandomDirection() {
     Math.random() * 2 - 1,
     Math.random() * 2 - 1,
     Math.random() * 2 - 1
-  ).multiply(new THREE.Vector3(1, 1, 1));
+  );
 }
 
 function Targets() {
