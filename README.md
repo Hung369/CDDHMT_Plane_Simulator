@@ -13,7 +13,7 @@ This project is a flight simulator built with React.js and Three.js. It provides
 2. Navigate to the project directory: `cd CDDHMT_Plane_Simulator`
 3. Install dependencies: `npm install`
 4. Start the server: `npm run dev`
-5. Open your browser and visit `http://localhost:3000`
+5. Open your browser and visit `http://localhost:5173`
 
 ## Usage
 Using W,S,A,D keys to control your plane and shift to boost up your speed. Press esc to pause the game.
