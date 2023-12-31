@@ -9,8 +9,8 @@ This project is a flight simulator built with React.js and Three.js. It provides
 - Multiple choices for aircraft model.
 
 ## Installation
-1. Clone the repository: `git clone https://github.com/yourusername/flightsimulator.git`
-2. Navigate to the project directory: `cd flightsimulator`
+1. Clone the repository: `git clone https://github.com/Hung369/CDDHMT_Plane_Simulator.git`
+2. Navigate to the project directory: `cd CDDHMT_Plane_Simulator`
 3. Install dependencies: `npm install`
 4. Start the server: `npm run dev`
 5. Open your browser and visit `http://localhost:3000`
